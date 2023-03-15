@@ -47,9 +47,15 @@ const Home = () => {
                     <Flex className="hero-wrap">
                         <Box className="grid">
                             <motion.div transition={ { duration: 1, delay: .3 } } initial={ { opacity: 0 } } animate={ { opacity: 1 } }>
+                                {/* <Image id="web-img" borderRadius="lg" src='https://firebasestorage.googleapis.com/v0/b/morning-donuts-d5e7f.appspot.com/o/gourmet-horizontal.jpg?alt=media&token=a8075362-06ee-43f1-a9af-fc1fc5d51b2d'></Image> */}
+
                                 <Image id="web-img" borderRadius="lg" src='https://firebasestorage.googleapis.com/v0/b/morning-donuts-d5e7f.appspot.com/o/vdayhomepagehero.jpeg?alt=media&token=9e5347b4-8bdb-483e-85d3-8d6d754a6329'></Image>
                             </motion.div>
+
+                            
                             <motion.div transition={ { duration: 1, delay: .3 } } initial={ { opacity: 0 } } animate={ { opacity: 1 } }>
+                                {/* <Image id="mobile-img" borderRadius="lg" src='https://firebasestorage.googleapis.com/v0/b/morning-donuts-d5e7f.appspot.com/o/gourmet-horizontal.jpg?alt=media&token=a8075362-06ee-43f1-a9af-fc1fc5d51b2d'></Image> */}
+
                                 <Image id="mobile-img" borderRadius="lg" src='https://firebasestorage.googleapis.com/v0/b/morning-donuts-d5e7f.appspot.com/o/landing-mobile.JPG?alt=media&token=f1011c94-a5a0-4507-bbfb-4f4bce21331d'></Image>
                             </motion.div>
                         </Box>

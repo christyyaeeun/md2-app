@@ -10,6 +10,8 @@ import {
     useColorModeValue,
     useBreakpointValue,
     useDisclosure,
+    UnorderedList,
+    ListItem,
 } from '@chakra-ui/react';
 import {
     HamburgerIcon,
@@ -20,7 +22,6 @@ export default function Navbar() {
     const { isOpen, onToggle } = useDisclosure();
 
     return (
-        <nav>
             <Box>
                 <Flex
                     bg={ useColorModeValue('white', 'gray.800') }
@@ -52,32 +53,26 @@ export default function Navbar() {
                                 fontWeight="900"
                                 textTransform={ "uppercase" }
                                 color={ useColorModeValue('white', 'black') }>
-                               <Link to="/dashboard">MD</Link>
+                                <Link to="/dashboard">MD</Link>
                             </Text>
                         </Box>
 
                         <Flex fontSize="large" fontWeight="700" display={ { base: 'none', md: 'flex' } } ml={ 10 }>
-                            {/* <DesktopNav /> */ }
-                            <Stack direction="row" spacing="6">
-                                <Box>
-                                    <NavLink to="/">Home</NavLink>
-                                </Box>
-
-                                <Box>
-                                    <NavLink to="/about">About</NavLink>
-                                </Box>
-
-                                <Box>
-                                    <NavLink to="/menu">Menu</NavLink>
-                                </Box>
-                                <Box>
-                                    <NavLink to="/contact">
-                                        { ({ isActive }) => (
-                                            <span>Contact</span>
-                                        ) }
-                                    </NavLink>
-                                </Box>
-                            </Stack>
+                            <nav className="nav-menu">
+                                <UnorderedList listStyleType="none">
+                                    <Stack direction="row" spacing="6">
+                                        <ListItem><NavLink to="/">Home</NavLink></ListItem>
+                                        <ListItem><NavLink to="/about">About</NavLink></ListItem>
+                                        <ListItem><NavLink to="/menu">Menu</NavLink></ListItem>
+                                        <ListItem><NavLink to="/contact">
+                                            { ({ isActive }) => (
+                                                <span>Contact</span>
+                                            ) }
+                                        </NavLink></ListItem>
+                                    </Stack>
+                                </UnorderedList>
+                            </nav>
+          
                         </Flex>
                     </Flex>
 
@@ -90,32 +85,28 @@ export default function Navbar() {
                 </Flex>
 
                 <Collapse in={ isOpen } animateOpacity>
-                    <Stack
-                        direction="column"
-                        spacing="6"
-                        fontWeight="700"
-                        fontSize="large"
-                        bg={ useColorModeValue('white', 'gray.800') }
-                        p={ 4 }
-                        display={ { md: 'none' } }>
-                        <Box>
-                            <NavLink to="/">Home</NavLink>
-                        </Box>
-                        <Box>
-                            <NavLink to="/about">About</NavLink>
-                        </Box>
-                        <Box>
-                            <NavLink to="/menu">Menu</NavLink>
-                        </Box>
-                        <Box>
-                            <NavLink to="/contact">Contact</NavLink>
-                        </Box>
-                    </Stack>
+
+
+                    <UnorderedList listStyleType="none">
+                        <Stack
+                            direction="column"
+                            spacing="4"
+                            fontWeight="700"
+                            fontSize="large"
+                            bg={ useColorModeValue('white', 'gray.800') }
+                            p={ 2 }
+                            display={ { md: 'none' } }>
+                            <ListItem><NavLink to="/">Home</NavLink></ListItem>
+                            <ListItem><NavLink to="/about">About</NavLink></ListItem>
+                            <ListItem><NavLink to="/menu">Menu</NavLink></ListItem>
+                            <ListItem><NavLink to="/contact">Contact</NavLink></ListItem>
+                        </Stack>
+
+                    </UnorderedList>
+
 
                 </Collapse>
             </Box>
-
-        </nav>
     );
 
 

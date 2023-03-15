@@ -80,7 +80,7 @@ export default function Footer() {
                             © 2023 JE & EJ Inc. II. All rights reserved
                         </Text>
                         <Stack className="social-btn" direction={ 'row' } spacing={ 6 }>
-                            <SocialButton label={ 'UberEats' } href={ '#' }>
+                            <SocialButton label={ 'UberEats' } href={ 'https://www.order.store/store/morning-donuts/sc0Ta0gDRoGYLjb_k9r32A' }>
                                 <SiUbereats className="social-icon" boxsize={{base:"1.2em", md:"1.3em", lg:"1.4em"}} />
                             </SocialButton>
                             <SocialButton label={ 'Uber' } href={ '#' }>
