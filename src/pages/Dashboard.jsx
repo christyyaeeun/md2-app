@@ -3,6 +3,7 @@ import { API } from 'aws-amplify';
 import { listOrders } from '../graphql/queries';
 import { Box, Text, Center, Flex, Stack, Heading, useColorModeValue, Container, Button, useDisclosure, Collapse } from '@chakra-ui/react'
 import { deleteOrder as deleteOrderMutation } from '../graphql/mutations'
+import { format } from 'date-fns'
 
 interface OrderCardProps {
     fName: string;
@@ -11,10 +12,11 @@ interface OrderCardProps {
     letters: string;
     colors: string;
     details: string;
+    createdAt: Date;
 }
 
 function OrderCard(props: OrderCardProps) {
-    const { fName, lName, phone, letters, colors, details } = props;
+    const { fName, lName, phone, letters, colors, details, createdAt } = props;
 
     return (
         <Center py={ 6 }>
@@ -30,9 +32,14 @@ function OrderCard(props: OrderCardProps) {
                 <Stack flex={ 1 } flexDirection="column" justifyContent="space-evenly" alignItems="flex-start">
                     <Heading fontSize="md">Customer Details</Heading>
                     <Flex>
+                        <Text as='b' mr=".3em">Order Date: </Text>
+                        <Text>{createdAt}</Text>
+                    </Flex>
+                    <Flex>
                         <Text as='b' mr=".3em">Name: </Text>
                         <Text> { fName + ' ' + lName }</Text>
                     </Flex>
+
                     <Flex>
                         <Text as='b' mr=".3em">Phone: </Text>
                         <Text> { phone }</Text>
@@ -64,16 +71,13 @@ function OrderCard(props: OrderCardProps) {
 
 function Dashboard() {
     const [ orders, setOrders ] = useState([]);
-    const [ allOrders, setAllOrders ] = useState([]);
-    const { getDisclosureProps, getButtonProps } = useDisclosure()
-    const buttonProps = getButtonProps()
-    const disclosureProps = getDisclosureProps()
+    const [ pastOrders, setPastOrders ] = useState([]);
     const [ open, setOpen ] = useState(false);
     const { isOpen, onToggle } = useDisclosure()
 
     useEffect(() => {
         fetchOrders();
-        getAllOrders()
+        getPastOrders()
     }, []);
 
     async function fetchOrders() {
@@ -81,7 +85,6 @@ function Dashboard() {
         let ordersArray = orderData.data.listOrders.items;
         setOrders(ordersArray.filter(order => order._deleted !== true));
     }
-
 
     async function deleteOrder({ id, _version }) {
         const newArray = orders.filter(order => order.id !== id);
@@ -93,76 +96,48 @@ function Dashboard() {
         console.log('new order', newArray);
     }
 
-    async function getAllOrders() {
+    async function getPastOrders() {
         let orderData = await API.graphql({ query: listOrders });
-        let allOrdersArray = orderData.data.listOrders.items;
-        setAllOrders(allOrdersArray);
+        let pastOrdersArray = orderData.data.listOrders.items;
+        setPastOrders(pastOrdersArray);
     }
-
-
 
     const handleClick = () => {
         setOpen(!open);
         onToggle();
     };
 
-    //     return (
-    //         <>
-    //             <Container h="100%">
-    //                 { orders.map( order => (
-    //                     <OrderCard key={ order.id } fName={ order.fName } lName={ order.lName } phone={ order.phone } letters={ order.letters } colors={ order.colors } details={ order.details } />
-    //                     )
-    //                 ) }
-    //             </Container>
-    //         </>
-    //     )
-    // }
+
     return (
         <>
             <Container h="100%" pb="2em">
                 <Flex w={ { base: '350px', md: '450px', lg: '500px' } } justifyContent="flex-end">
                     <Button id="past-btn" onClick={ handleClick } mt="1em">{ open ? "Close" : "View Past Orders" }</Button>
                 </Flex>
-              
 
                 <Collapse in={ isOpen }>
                     <Box>
                         <Heading mt="1em" fontSize="lg">Past Orders</Heading>
 
-                        { allOrders.map((allOrder, i) => {
+                        { pastOrders.map((pastOrder) => {
                             return (
                                 <>
                                     <Flex color="gray.500" direction="column" mb="1.5em" w={ { base: '350px', md: '450px', lg: '500px' } }>
-                                        <OrderCard key={ allOrder.id } fName={ allOrder.fName } lName={ allOrder.lName } phone={ allOrder.phone } letters={ allOrder.letters } colors={ allOrder.colors } details={ allOrder.details } />
+                                        <OrderCard key={ pastOrder.id } createdAt={ format(new Date(pastOrder.createdAt), "MM/dd/yyyy") } fName={ pastOrder.fName } lName={ pastOrder.lName } phone={ pastOrder.phone } letters={ pastOrder.letters } colors={ pastOrder.colors } details={ pastOrder.details } />
                                     </Flex>
                                 </>
                             )
                         }) }
                     </Box>
                 </Collapse>
-                {/* <Button onClick={handleClick} id="past-btn" mt="1em" { ...buttonProps }>{ active ? "View Past Orders" : "Close"}</Button> */}
 
-                {/* <Box { ...disclosureProps }>
-                    <Heading mt="1em" fontSize="lg">Past Orders</Heading>
-
-                    { allOrders.map((allOrder, i) => {
-                        return (
-                            <>
-                                <Flex color="gray.500" direction="column" mb="1.5em" w={ { base: '350px', md: '450px', lg: '500px' } }>
-                                    <OrderCard key={ allOrder.id } fName={ allOrder.fName } lName={ allOrder.lName } phone={ allOrder.phone } letters={ allOrder.letters } colors={ allOrder.colors } details={ allOrder.details } />
-                                </Flex>
-                            </>
-                        )
-                    }) }
-                </Box> */}
-             
                 <Box>
                     <Heading mt="1em" fontSize="lg">Current Orders</Heading>
-                    { orders.map((order, i) => {
+                    { orders.map((order) => {
                         return (
                             <>
                                 <Flex direction="column" mb="2em" w={ { base: '350px', md: '450px', lg: '500px' } }>
-                                    <OrderCard key={ order.id } fName={ order.fName } lName={ order.lName } phone={ order.phone } letters={ order.letters } colors={ order.colors } details={ order.details } />
+                                    <OrderCard key={ order.id } fName={ order.fName } lName={ order.lName } createdAt={ format(new Date(order.createdAt), "MM/dd/yyyy") } phone={ order.phone } letters={ order.letters } colors={ order.colors } details={ order.details } />
                                     <Button id="styled-btn" onClick={ () => deleteOrder(order) }>Delete Order</Button>
 
                                 </Flex>

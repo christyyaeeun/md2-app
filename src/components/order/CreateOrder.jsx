@@ -15,11 +15,13 @@ import {
     FormControl,
     FormLabel,
     FormHelperText,
+    Spinner,
 } from '@chakra-ui/react';
 import { useDisclosure } from '@chakra-ui/react';
 import { useToast } from '@chakra-ui/react';
+import { toast } from 'react-toastify'
+
 // import Select from 'react-select';
-// import makeAnimated from 'react-select/animated';
 import { DataStore } from '@aws-amplify/datastore';
 import { Order } from '../../models';
 
@@ -36,7 +38,7 @@ import { Order } from '../../models';
 // ];
 
 const initialState = {
-    fName: '', lName: '', phone: '', letters: '', colors: '', details: '',
+    fName: '', lName: '', phone: '', letters: '', colors: '', details: '', saving: false,
 }
 function CreateOrder({ handleAddOrder }) {
     // const [ selectedColors, setSelectedColors ] = React.useState();
@@ -50,10 +52,6 @@ function CreateOrder({ handleAddOrder }) {
     //     console.log(selectedColors)
     // }
 
-    const submit = (e) => {
-        e.preventDefault();
-    }
-
 
     function onChangeText(e) {
         e.persist();
@@ -63,35 +61,29 @@ function CreateOrder({ handleAddOrder }) {
         }));
     }
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        toast.success("You have submitted your order.");
+    };
+
 
     async function save() {
-        try{
-            const { fName, lName,phone, letters,colors, details } = form;
-            if (!fName || !lName || !phone || !letters || !colors) return;
-        setForm(currentState => ({ ...currentState, saving: true }));
+        try {
+            const { fName, lName, phone, letters, colors } = form;
+            if (!fName || !lName || !phone || !letters || !colors ) return;
+            setForm(currentState => ({ ...currentState, saving: true }));
 
             const orderData = { ...form }
             await DataStore.save(
                 new Order({ ...form })
             );
-            console.log('successfully created new post')
+            console.log('successfully created new order')
             onClose();
             setForm({ fName: '', lName: '', phone: '', letters: '', colors: '', details: '' })
 
         } catch (err) {
             console.log('error: ', err);
         }
-    }
-
-    async function create() {
-        const orderData = { ...form }
-        await DataStore.save(
-            new Order({ ...form })
-        );
-        console.log('successfully created new post')
-        onClose();
-        setForm({ fName: '', lName: '', phone: '', letters: '', colors: '', details: '' })
-
     }
 
 
@@ -115,25 +107,25 @@ function CreateOrder({ handleAddOrder }) {
                             </Box>
                             <Box>
                                 <FormControl isRequired>
-                                <Input
-                                    value={ form.lName }
-                                    onChange={ e => setForm({ ...form, 'lName': e.target.value }) }
-                                    placeholder="Last Name"
-                                    size="md"
-                                />
+                                    <Input
+                                        value={ form.lName }
+                                        onChange={ e => setForm({ ...form, 'lName': e.target.value }) }
+                                        placeholder="Last Name"
+                                        size="md"
+                                    />
                                 </FormControl>
                             </Box>
 
                             <Box>
                                 <FormControl isRequired>
 
-                                <InputGroup>
-                                    <InputLeftAddon children='+234' />
-                                    <Input
-                                        value={ form.phone }
-                                        onChange={ e => setForm({ ...form, 'phone': e.target.value }) }
-                                        type='tel' placeholder='phone number' />
-                                </InputGroup>
+                                    <InputGroup>
+                                        <InputLeftAddon children='+234' />
+                                        <Input
+                                            value={ form.phone }
+                                            onChange={ e => setForm({ ...form, 'phone': e.target.value }) }
+                                            type='tel' placeholder='phone number' />
+                                    </InputGroup>
                                 </FormControl>
                             </Box>
                         </Stack>
@@ -219,7 +211,21 @@ function CreateOrder({ handleAddOrder }) {
                                 <Button id="styled-btn" type="submit" size="md" onClick={ save }>
                                     save
                                 </Button>
-                         
+                                { form.saving && (
+                                    <Box maxW={ { base: 'md', md: 'lg', lg: '2xl' } }>
+                                        <Spinner
+                                            className="loading-icon"
+                                            id="loading"
+                                            thickness="4px"
+                                            speed="0.65s"
+                                            emptyColor="gray.200"
+                                            color="blue.500"
+                                            size="xl"
+                                        />
+                                    </Box>
+                                ) }
+                               
+                               
                             </Flex>
                         </Stack>
                     </Box>

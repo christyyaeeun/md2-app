@@ -127,6 +127,34 @@ a.active {
   font-size: large;
 }
 
+#spinner {
+  position: fixed;
+}
+.loading-icon {
+  position: absolute;
+  top: 50%;
+  left: 43%;
+}
+
+/* Menu */
+.online-menu {
+  height: 100%;
+  /* background: #e3efe3; */
+  background:#f4efef;
+  padding-top: 0.5em;
+  padding-bottom: 3em;
+}
+
+#category-title {
+  font-size: x-large;
+  margin: 0.5em 0 0.5em 0;
+  padding-left:.5em;
+}
+
+#sub-title {
+  font-size:large;
+}
+
 /* About */
 .about {
   display: flex;
@@ -249,8 +277,8 @@ svg.contact-icon {
 
 /* Dashboard */
 #past-btn {
-background-color: cadetblue;
-color: white;
+  background-color: cadetblue;
+  color: white;
 }
 
 /* 550px */
