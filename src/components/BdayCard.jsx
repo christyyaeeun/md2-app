@@ -66,11 +66,7 @@ function BdayCard() {
                                         <CreateOrder />
                                     </ModalBody>
 
-                                    <ModalFooter>
-                                        <Button id="styled-btn" mr={ 3 } onClick={ onClose }>
-                                            Close
-                                        </Button>
-                                    </ModalFooter>
+                                    
                                 </ModalContent>
                             </Modal>
                         </Flex>

@@ -64,6 +64,24 @@ function CreateOrder({ handleAddOrder }) {
     }
 
 
+    async function save() {
+        try{
+            const { fName, lName,phone, letters,colors, details } = form;
+            if (!fName || !lName || !phone || !letters || !colors) return;
+        setForm(currentState => ({ ...currentState, saving: true }));
+
+            const orderData = { ...form }
+            await DataStore.save(
+                new Order({ ...form })
+            );
+            console.log('successfully created new post')
+            onClose();
+            setForm({ fName: '', lName: '', phone: '', letters: '', colors: '', details: '' })
+
+        } catch (err) {
+            console.log('error: ', err);
+        }
+    }
 
     async function create() {
         const orderData = { ...form }
@@ -86,7 +104,7 @@ function CreateOrder({ handleAddOrder }) {
 
                             <Heading fontSize="lg">Customer Details</Heading>
                             <Box>
-                                <FormControl>
+                                <FormControl isRequired>
                                     <Input
                                         value={ form.fName }
                                         onChange={ e => setForm({ ...form, 'fName': e.target.value }) }
@@ -96,15 +114,19 @@ function CreateOrder({ handleAddOrder }) {
                                 </FormControl>
                             </Box>
                             <Box>
+                                <FormControl isRequired>
                                 <Input
                                     value={ form.lName }
                                     onChange={ e => setForm({ ...form, 'lName': e.target.value }) }
                                     placeholder="Last Name"
                                     size="md"
                                 />
+                                </FormControl>
                             </Box>
 
                             <Box>
+                                <FormControl isRequired>
+
                                 <InputGroup>
                                     <InputLeftAddon children='+234' />
                                     <Input
@@ -112,6 +134,7 @@ function CreateOrder({ handleAddOrder }) {
                                         onChange={ e => setForm({ ...form, 'phone': e.target.value }) }
                                         type='tel' placeholder='phone number' />
                                 </InputGroup>
+                                </FormControl>
                             </Box>
                         </Stack>
 
@@ -120,7 +143,7 @@ function CreateOrder({ handleAddOrder }) {
                             <Heading fontSize="lg" mt="2.5em!important">Order Details</Heading>
                             <Text>Please note, all orders must be placed at least 24 hours in advanced before you pick-up.</Text>
                             <Box>
-                                <FormControl>
+                                <FormControl isRequired>
                                     <FormLabel id="form-lable" htmlFor="letters">
                                         Letters
                                     </FormLabel>
@@ -134,7 +157,7 @@ function CreateOrder({ handleAddOrder }) {
                                 </FormControl>
                             </Box>
                             <Box>
-                                <FormControl>
+                                <FormControl isRequired>
                                     <FormLabel id="form-lable" htmlFor="letters">
                                         Colors
                                     </FormLabel>
@@ -193,24 +216,10 @@ function CreateOrder({ handleAddOrder }) {
                             </Box>
                             <Flex mb="1">
                                 <Spacer />
-                                <Button id="styled-btn" type="submit" size="md" onClick={ create }>
+                                <Button id="styled-btn" type="submit" size="md" onClick={ save }>
                                     save
                                 </Button>
-                                <Button
-                                    w="7rem"
-                                    colorScheme="red"
-                                    variant="solid"
-                                    onClick={ (create) => {
-                                        toast({
-                                            title: 'Order Submitted.',
-                                            description: "We've received your order.",
-                                            status: 'success',
-                                            duration: 3000,
-                                            isClosable: true,
-                                        });
-                                    } }>
-                                    Submit
-                                </Button>
+                         
                             </Flex>
                         </Stack>
                     </Box>

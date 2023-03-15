@@ -1,5 +1,5 @@
 import * as React from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import {
     Box,
     Flex,
@@ -52,7 +52,7 @@ export default function Navbar() {
                                 fontWeight="900"
                                 textTransform={ "uppercase" }
                                 color={ useColorModeValue('white', 'black') }>
-                                MD
+                               <Link to="/dashboard">MD</Link>
                             </Text>
                         </Box>
 
@@ -60,7 +60,7 @@ export default function Navbar() {
                             {/* <DesktopNav /> */ }
                             <Stack direction="row" spacing="6">
                                 <Box>
-                                    <NavLink to="/home">Home</NavLink>
+                                    <NavLink to="/">Home</NavLink>
                                 </Box>
 
                                 <Box>
@@ -99,7 +99,7 @@ export default function Navbar() {
                         p={ 4 }
                         display={ { md: 'none' } }>
                         <Box>
-                            <NavLink to="/home">Home</NavLink>
+                            <NavLink to="/">Home</NavLink>
                         </Box>
                         <Box>
                             <NavLink to="/about">About</NavLink>

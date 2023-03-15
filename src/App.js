@@ -19,8 +19,8 @@ function App() {
     <ChakraProvider theme={ theme }>
       <Navbar />
       <Routes>
-        <Route path="/" element={ <Layout /> }>
-          <Route path="/home" element={ <Home /> } />
+        {/* <Route path="/" element={ <Layout /> }> */}
+          <Route path="/" element={ <Home /> } />
           <Route path="/landing" element={ <Landing /> } />
 
           <Route path="/dashboard" element={ <Dashboard /> } />
@@ -31,7 +31,7 @@ function App() {
           <Route path="/specials" element={ <Specials /> } />
           <Route path="/specialties" element={ <Specialties /> } />
           <Route path="/about" element={ <About /> } />
-        </Route>
+       
       </Routes>
       <Footer />
     </ChakraProvider>
