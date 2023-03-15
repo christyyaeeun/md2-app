@@ -1,40 +1,39 @@
 import React from 'react';
 import {
   ChakraProvider,
-  Box,
-  Text,
-  Link,
-  VStack,
-  Code,
-  Grid,
   theme,
 } from '@chakra-ui/react';
-import { ColorModeSwitcher } from './ColorModeSwitcher';
-import { Logo } from './Logo';
+import { Routes, Route } from 'react-router-dom';
+import { Home, About, Contact, Menu } from './pages';
+import { Breakfast } from './components/menu/Breakfast'
+import { Donuts } from './components/menu/Donuts'
+import { Specials } from './components/menu/Specials'
+import { Specialties } from './components/menu/Specialties'
+import Dashboard from './pages/Dashboard';
+import Landing from './pages/Landing';
+import "./style.css"
+import { Navbar, Footer, Layout} from './components/layout'
 
 function App() {
   return (
-    <ChakraProvider theme={theme}>
-      <Box textAlign="center" fontSize="xl">
-        <Grid minH="100vh" p={3}>
-          <ColorModeSwitcher justifySelf="flex-end" />
-          <VStack spacing={8}>
-            <Logo h="40vmin" pointerEvents="none" />
-            <Text>
-              Edit <Code fontSize="xl">src/App.js</Code> and save to reload.
-            </Text>
-            <Link
-              color="teal.500"
-              href="https://chakra-ui.com"
-              fontSize="2xl"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learn Chakra
-            </Link>
-          </VStack>
-        </Grid>
-      </Box>
+    <ChakraProvider theme={ theme }>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={ <Layout /> }>
+          <Route path="/home" element={ <Home /> } />
+          <Route path="/landing" element={ <Landing /> } />
+
+          <Route path="/dashboard" element={ <Dashboard /> } />
+          <Route path="/contact" element={ <Contact /> } />
+          <Route path="/menu" element={ <Menu /> } />
+          <Route path="/donuts" element={ <Donuts /> } />
+          <Route path="/breakfast" element={ <Breakfast /> } />
+          <Route path="/specials" element={ <Specials /> } />
+          <Route path="/specialties" element={ <Specialties /> } />
+          <Route path="/about" element={ <About /> } />
+        </Route>
+      </Routes>
+      <Footer />
     </ChakraProvider>
   );
 }
